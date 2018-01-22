@@ -8,7 +8,7 @@ export const SymbolicExpression = {
     const freeVars = new Set();
     body.traverse(CollectFreeVariables, { freeVars });
     const makeParam = name =>
-      t.objectProperty(t.identifier(name), t.identifier(name));
+      t.objectProperty(t.identifier(name), t.identifier(name), false, true);
     const param = t.objectPattern(Array.from(freeVars).map(makeParam));
     const arrow = t.arrowFunctionExpression([param], body.node, false);
     path.replaceWith(arrow);

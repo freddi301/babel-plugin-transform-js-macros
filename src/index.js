@@ -1,7 +1,7 @@
-import { SymbolicExpression } from './SymbolicExpression'
-import { BlockReduce} from './BlockReduce'
+import { SymbolicExpression } from "./SymbolicExpression";
+import { BlockReduce } from "./BlockReduce";
 
-const Dispatcher = {
+export const Dispatcher = {
   CallExpression(path) {
     const callee = path.get("callee");
     if (callee.isIdentifier({ name: "symbolic" }))

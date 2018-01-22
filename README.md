@@ -8,13 +8,7 @@ A handful of useful macros as babel-plugin.
 npm install --save-dev babel-plugin-transform-js-macros
 ```
 
-`.babelrc`
-
-```json
-{
-  "plugins": ["babel-plugin-transform-js-macros"]
-}
-```
+`.babelrc` <- `{ "plugins": ["babel-plugin-transform-js-macros"] }`
 
 ## SymbolicExpression
 
@@ -27,3 +21,8 @@ gives
 ```javascript
 const myExpression = ({ x, y }) => x + y;
 ```
+
+## TODO
+
+[ ] fix name collision
+[ ] allow nested macros

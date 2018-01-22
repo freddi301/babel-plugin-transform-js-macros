@@ -1,1 +1,3 @@
-export const BlockReduce = {};
+export const BlockReduce = {
+  CallExpression(path) {}
+};

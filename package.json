@@ -1,0 +1,33 @@
+{
+  "name": "@babel/plugin-transform-js-macros",
+  "version": "0.0.0",
+  "description": "A handful of useful macros as babel-plugin.",
+  "repository": "https://github.com/freddi301/babel-plugin-transform-js-macros.git",
+  "license": "MIT",
+  "main": "lib/index.js",
+  "files": [
+    "lib"
+  ],
+  "keywords": [
+    "babel-plugin"
+  ],
+  "scripts": {
+    "build": "babel src -d lib --source-maps true",
+    "test": "jest",
+    "precommit": "npm test",
+    "prepublish": "npm run build"
+  },
+  "peerDependencies": {
+    "babel-core": "^6.26.0"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-jest": "^22.1.0",
+    "babel-preset-env": "^1.6.1",
+    "husky": "^0.14.3",
+    "jest": "^22.1.4",
+    "regenerator-runtime": "^0.11.1"
+  }
+}

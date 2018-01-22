@@ -14,7 +14,7 @@ npm install --save-dev babel-plugin-transform-js-macros
 
 ```json
 {
-  "plugins": ["babel-plugin-transform-flow-strip-types"]
+  "plugins": ["babel-plugin-transform-js-macros"]
 }
 ```
 

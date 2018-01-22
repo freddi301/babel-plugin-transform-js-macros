@@ -5,7 +5,7 @@ A handful of useful macros as babel-plugin.
 ## Install
 
 ```bash
-npm install --save-dev @babel/plugin-transform-js-macros
+npm install --save-dev babel-plugin-transform-js-macros
 ```
 
 ## Usage
@@ -14,7 +14,7 @@ npm install --save-dev @babel/plugin-transform-js-macros
 
 ```json
 {
-  "plugins": ["@babel/plugin-transform-flow-strip-types"]
+  "plugins": ["babel-plugin-transform-flow-strip-types"]
 }
 ```
 

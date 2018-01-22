@@ -8,8 +8,6 @@ A handful of useful macros as babel-plugin.
 npm install --save-dev babel-plugin-transform-js-macros
 ```
 
-## Usage
-
 `.babelrc`
 
 ```json

@@ -1,27 +1,16 @@
-import { types as t } from "babel-core";
+import { SymbolicExpression } from './SymbolicExpression'
+import { BlockReduce} from './BlockReduce'
 
-const SymbolicExpression = {
+const Dispatcher = {
   CallExpression(path) {
-    if (!path.get("callee").isIdentifier({ name: "symbolic" })) return;
-    const body = path.get("arguments")[0];
-    if (body.isSpreadElement()) throw path.buildCodeFrameError("Does not support spread operator");
-    const freeVars = new Set();
-    body.traverse(CollectFreeVariables, { freeVars });
-    const makeParam = name =>
-      t.objectProperty(t.identifier(name), t.identifier(name));
-    const param = t.objectPattern(Array.from(freeVars).map(makeParam));
-    const arrow = t.arrowFunctionExpression([param], body.node, false);
-    path.replaceWith(arrow);
-  }
-};
-
-const CollectFreeVariables = {
-  Identifier(path) {
-    const isFree = !path.isReferencedIdentifier();
-    this.freeVars.add(path.node.name);
+    const callee = path.get("callee");
+    if (callee.isIdentifier({ name: "symbolic" }))
+      SymbolicExpression.CallExpression(path);
+    else if (callee.isIdentifier({ name: "blockReduce" }))
+      BlockReduce.CallExpression(path);
   }
 };
 
 export default function() {
-  return { visitor: SymbolicExpression };
+  return { visitor: Dispatcher };
 }

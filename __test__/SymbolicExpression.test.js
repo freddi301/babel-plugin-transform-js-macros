@@ -1,9 +1,10 @@
 import { transform } from "babel-core";
 import plugin from "../src";
+import { identifier } from "../src/SymbolicExpression";
 
 describe("SymbolicExpression", () => {
   test("works", () => {
-    const { code } = transform(`symbolic(x+y)`, {
+    const { code } = transform(`${identifier}(x+y)`, {
       plugins: [plugin]
     });
     expect(code).toBe(`({\n  x,\n  y\n}) => x + y;`);

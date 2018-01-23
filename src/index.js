@@ -1,13 +1,15 @@
-import { SymbolicExpression } from "./SymbolicExpression";
-import { BlockReduce } from "./BlockReduce";
+import {
+  SymbolicExpression,
+  identifier as SymbolicExpressionIdentifier
+} from "./SymbolicExpression";
+import { DoNotation, identifier as DoNotationIdentifier } from "./DoNotation";
 
 export const Dispatcher = {
   CallExpression(path) {
-    const callee = path.get("callee");
-    if (callee.isIdentifier({ name: "symbolic" }))
+    if (path.get("callee").isIdentifier({ name: SymbolicExpressionIdentifier }))
       SymbolicExpression.CallExpression(path);
-    else if (callee.isIdentifier({ name: "blockReduce" }))
-      BlockReduce.CallExpression(path);
+    else if (path.get("callee").isIdentifier({ name: DoNotationIdentifier }))
+      DoNotation.CallExpression(path);
   }
 };
 

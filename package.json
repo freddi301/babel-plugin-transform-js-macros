@@ -10,10 +10,10 @@
   "keywords": ["babel-plugin", "macro"],
   "scripts": {
     "build": "babel src -d lib --source-maps true",
-    "test": "jest",
+    "test": "jest --coverage",
     "precommit": "npm test && lint-staged && npm run build",
     "prepublish": "npm run build",
-    "ci": "npm test && npm run build"
+    "ci": "npm test && npm run build && codecov"
   },
   "peerDependencies": {
     "babel-core": "^6.26.0"
@@ -24,6 +24,7 @@
     "babel-core": "^6.26.0",
     "babel-jest": "^22.1.0",
     "babel-preset-env": "^1.6.1",
+    "codecov": "^3.0.0",
     "husky": "^0.14.3",
     "jest": "^22.1.4",
     "lint-staged": "^6.0.1",

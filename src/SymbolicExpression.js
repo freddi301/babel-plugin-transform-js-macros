@@ -1,5 +1,7 @@
 import { types as t } from "babel-core";
 
+export const identifier = "symbolic";
+
 export const SymbolicExpression = {
   CallExpression(path) {
     const body = path.get("arguments")[0];

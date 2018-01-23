@@ -1,15 +1,10 @@
 import { types as t } from "babel-core";
 
-export const identifier = "join";
-
 export const DoNotation = {
+  identifier: "join",
   CallExpression(path) {
     const body = path.get("arguments");
-    if (body.length < 1) throw ast.buildCodeFrameError("At least one argument");
-    body.forEach(ast => {
-      if (ast.isSpreadElement())
-        throw ast.buildCodeFrameError("Does not support spread operator");
-    });
+    validateArguments(body);
     const first = body[0];
     const rest = body.slice(1);
     const joiner = path.scope.generateUidIdentifier("joiner");
@@ -19,11 +14,18 @@ export const DoNotation = {
       const isBinding = memo.isAssignmentExpression();
       const carry = isBinding ? [memo.node.left] : [];
       const prev = isBinding ? memo.node.right : memo.node;
-      return t.callExpression(joiner, [
-        prev,
-        t.arrowFunctionExpression(carry, createChain(item))
-      ]);
+      const next = t.arrowFunctionExpression(carry, createChain(item));
+      return t.callExpression(joiner, [prev, next]);
     };
-    path.replaceWith(t.arrowFunctionExpression([joiner], createChain(first)));
+    const chain = t.arrowFunctionExpression([joiner], createChain(first));
+    path.replaceWith(chain);
   }
+};
+
+const validateArguments = body => {
+  if (body.length < 1) throw body.buildCodeFrameError("At least one argument");
+  body.forEach(ast => {
+    if (ast.isSpreadElement())
+      throw ast.buildCodeFrameError("Does not support spread operator");
+  });
 };

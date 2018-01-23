@@ -1,3 +1,6 @@
+const assert = x => {
+  if (!x) throw new Error();
+};
 class Nothing {
   mbind(f) {
     return new Nothing();

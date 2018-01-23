@@ -160,9 +160,9 @@ babel-messages@^6.23.0:
   dependencies:
     babel-runtime "^6.22.0"
 
-babel-plugin-transform-js-macros@^0.0.1:
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/babel-plugin-transform-js-macros/-/babel-plugin-transform-js-macros-0.0.1.tgz#a40490dbbd822c0d38c02e408531d4aa3d86d151"
+babel-plugin-transform-js-macros@0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/babel-plugin-transform-js-macros/-/babel-plugin-transform-js-macros-0.0.2.tgz#91a423e718468356268ea666756a7c2fa3cb6d00"
 
 babel-polyfill@^6.26.0:
   version "6.26.0"

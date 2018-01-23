@@ -1,14 +1,12 @@
-import {
-  SymbolicExpression,
-  identifier as SymbolicExpressionIdentifier
-} from "./SymbolicExpression";
-import { DoNotation, identifier as DoNotationIdentifier } from "./DoNotation";
+import { SymbolicExpression } from "./SymbolicExpression";
+import { DoNotation } from "./DoNotation";
 
 export const Dispatcher = {
   CallExpression(path) {
-    if (path.get("callee").isIdentifier({ name: SymbolicExpressionIdentifier }))
+    const callee = path.get("callee");
+    if (callee.isIdentifier({ name: SymbolicExpression.identifier }))
       SymbolicExpression.CallExpression(path);
-    else if (path.get("callee").isIdentifier({ name: DoNotationIdentifier }))
+    else if (callee.isIdentifier({ name: DoNotation.identifier }))
       DoNotation.CallExpression(path);
   }
 };

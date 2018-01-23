@@ -43,9 +43,11 @@ const doNotation = _joiner => _joiner(a, x => _joiner(b, y => c));
 ```javascript
 // Promise chain
 const then = (promise, callback) => Promise.resolve(promise).then(callback);
-const six = join((x = Promise.resolve(4)), (y = x * 2), Promise.resolve(y - 2))(
-  then
-);
+const six = join(
+  (x = Promise.resolve(4)), // binding a Promise
+  (y = x * 2), // Promise.resolve will take care non-promise values
+  Promise.resolve(y - 2)
+)(then);
 six.then(console.log); // 6
 ```
 
@@ -65,7 +67,15 @@ class Just {
   }
 }
 const bind = (monad, binder) => monad.mbind(binder);
-const plus3 = n => join((a = n), (b = new Just(3)), new Just(a + b))(bind);
+
+// here the magic
+const plus3 = n =>
+  join(
+    (a = n), // n must be a monad
+    (b = new Just(3)),
+    new Just(a + b)
+  )(bind);
+
 plus3(new Nothing()) instanceof Nothing; // true
 plus3(new Just(4)) instanceof Just; // true
 plus3(new Just(5)).x === 8; // true

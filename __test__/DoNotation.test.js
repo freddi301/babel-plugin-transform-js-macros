@@ -1,23 +1,23 @@
 import { transform } from "babel-core";
 import plugin from "../src";
-import { identifier } from "../src/DoNotation";
+import { DoNotation } from "../src/DoNotation";
 import { basename } from "path";
 
 describe("DoNotation", () => {
   test("single element", () => {
-    const { code } = transform(`${identifier}(a)`, {
+    const { code } = transform(`${DoNotation.identifier}(a)`, {
       plugins: [plugin]
     });
     expect(code).toBe("_joiner => a;");
   });
   test("3 elements", () => {
-    const { code } = transform(`${identifier}(a, b, c)`, {
+    const { code } = transform(`${DoNotation.identifier}(a, b, c)`, {
       plugins: [plugin]
     });
     expect(code).toBe("_joiner => _joiner(a, () => _joiner(b, () => c));");
   });
   test("bind var", () => {
-    const result = transform(`${identifier}(x = a, y = b, c)`, {
+    const result = transform(`${DoNotation.identifier}(x = a, y = b, c)`, {
       plugins: [plugin]
     });
     expect(result.code).toBe("_joiner => _joiner(a, x => _joiner(b, y => c));");
@@ -25,7 +25,7 @@ describe("DoNotation", () => {
   test("execute Promise", done => {
     const then = (promise, callback) => Promise.resolve(promise).then(callback);
     const { code } = transform(
-      `${identifier}(
+      `${DoNotation.identifier}(
       x = Promise.resolve(4),
       y = x * 2,
       Promise.resolve(y - 2)
@@ -53,7 +53,7 @@ describe("DoNotation", () => {
     const bind = (monad, binder) => monad.mbind(binder);
     const { code } = transform(
       `
-      n => ${identifier}(
+      n => ${DoNotation.identifier}(
         a = n,
         b = new Just(3),
         new Just(a + b)

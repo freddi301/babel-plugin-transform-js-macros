@@ -9,7 +9,7 @@
   "files": ["lib"],
   "keywords": ["babel-plugin", "macro"],
   "scripts": {
-    "build": "babel src -d lib --source-maps true",
+    "build": "rm -rf lib && babel src -d lib --source-maps true",
     "test": "jest --coverage",
     "precommit": "npm test && lint-staged && npm run build",
     "prepublish": "npm run build",

@@ -64,4 +64,11 @@ describe("DoNotation", () => {
     expect(eval(code)(new Nothing())(bind)).toBeInstanceOf(Nothing);
     expect(eval(code)(new Just(4))(bind)).toEqual(new Just(7));
   });
+  test("execute toArray", () => {
+    const toArray = (item, next) => [item].concat(next(item));
+    const { code } = transform(`join(a = 1, b = 2, a + b)`, {
+      plugins: [plugin]
+    });
+    expect(eval(code)(toArray)).toEqual([1, 2, 3]);
+  });
 });

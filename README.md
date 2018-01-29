@@ -81,6 +81,11 @@ plus3(new Just(4)) instanceof Just; // true
 plus3(new Just(5)).x === 8; // true
 ```
 
+```javascript
+const toArray = (item, next) => [item].concat(next(item));
+join((a = 1), (b = 2), (c = a + b))(toArray); // [1,2,3]
+```
+
 ## TODO
 
 * [ ] fix name collision

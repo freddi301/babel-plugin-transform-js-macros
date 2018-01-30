@@ -1,4 +1,4 @@
-# JS-MACROS [![CircleCI](https://circleci.com/gh/freddi301/babel-plugin-transform-js-macros/tree/master.svg?style=svg)](https://circleci.com/gh/freddi301/babel-plugin-transform-js-macros/tree/master)
+# JS-MACROS [![CircleCI](https://circleci.com/gh/freddi301/babel-plugin-transform-js-macros/tree/master.svg?style=svg)](https://circleci.com/gh/freddi301/babel-plugin-transform-js-macros/tree/master) [![codecov](https://codecov.io/gh/freddi301/babel-plugin-transform-js-macros/branch/master/graph/badge.svg)](https://codecov.io/gh/freddi301/babel-plugin-transform-js-macros)
 
 A handful of useful macros as babel-plugin.
 
@@ -84,6 +84,11 @@ plus3(new Just(5)).x === 8; // true
 ```javascript
 const toArray = (item, next) => [item].concat(next(item));
 join((a = 1), (b = 2), (c = a + b))(toArray); // [1,2,3]
+```
+
+```javascript
+const assign = (item, next) => next(item);
+join((a = 1), (b = 2), { a, b }); // { a: 1,b:2}
 ```
 
 ## TODO

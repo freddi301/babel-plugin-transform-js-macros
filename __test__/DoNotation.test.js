@@ -71,4 +71,11 @@ describe("DoNotation", () => {
     });
     expect(eval(code)(toArray)).toEqual([1, 2, 3]);
   });
+  test("execute assign", () => {
+    const assign = (item, next) => next(item);
+    const { code } = transform(`join(a = 1, b = 2, ({ a, b }))`, {
+      plugins: [plugin]
+    });
+    expect(eval(code)(assign)).toEqual({ a: 1, b: 2 });
+  });
 });

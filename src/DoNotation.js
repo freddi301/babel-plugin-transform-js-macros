@@ -2,8 +2,8 @@ import { types as t } from "babel-core";
 
 export const DoNotation = {
   identifier: "join",
-  CallExpression(path) {
-    const body = path.get("arguments");
+  SequenceExpression(path) {
+    const body = path.get("expressions").slice(1);
     validateArguments(body);
     const first = body[0];
     const rest = body.slice(1);
@@ -24,8 +24,4 @@ export const DoNotation = {
 
 const validateArguments = body => {
   if (body.length < 1) throw body.buildCodeFrameError("At least one argument");
-  body.forEach(ast => {
-    if (ast.isSpreadElement())
-      throw ast.buildCodeFrameError("Does not support spread operator");
-  });
 };

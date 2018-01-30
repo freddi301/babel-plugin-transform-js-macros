@@ -5,19 +5,19 @@ import { basename } from "path";
 
 describe("DoNotation", () => {
   test("single element", () => {
-    const { code } = transform(`${DoNotation.identifier}(a)`, {
+    const { code } = transform(`(${DoNotation.identifier}, a)`, {
       plugins: [plugin]
     });
     expect(code).toBe("_joiner => a;");
   });
   test("3 elements", () => {
-    const { code } = transform(`${DoNotation.identifier}(a, b, c)`, {
+    const { code } = transform(`(${DoNotation.identifier}, a, b, c)`, {
       plugins: [plugin]
     });
     expect(code).toBe("_joiner => _joiner(a, () => _joiner(b, () => c));");
   });
   test("bind var", () => {
-    const result = transform(`${DoNotation.identifier}(x = a, y = b, c)`, {
+    const result = transform(`(${DoNotation.identifier}, x = a, y = b, c)`, {
       plugins: [plugin]
     });
     expect(result.code).toBe("_joiner => _joiner(a, x => _joiner(b, y => c));");
@@ -25,11 +25,11 @@ describe("DoNotation", () => {
   test("execute Promise", done => {
     const then = (promise, callback) => Promise.resolve(promise).then(callback);
     const { code } = transform(
-      `${DoNotation.identifier}(
-      x = Promise.resolve(4),
-      y = x * 2,
-      Promise.resolve(y - 2)
-    )`,
+      `(${DoNotation.identifier},
+        x = Promise.resolve(4),
+        y = x * 2,
+        Promise.resolve(y - 2)
+      )`,
       { plugins: [plugin] }
     );
     eval(code)(then)
@@ -53,7 +53,7 @@ describe("DoNotation", () => {
     const bind = (monad, binder) => monad.mbind(binder);
     const { code } = transform(
       `
-      n => ${DoNotation.identifier}(
+      n => (${DoNotation.identifier},
         a = n,
         b = new Just(3),
         new Just(a + b)
@@ -66,16 +66,22 @@ describe("DoNotation", () => {
   });
   test("execute toArray", () => {
     const toArray = (item, next) => [item].concat(next(item));
-    const { code } = transform(`join(a = 1, b = 2, a + b)`, {
-      plugins: [plugin]
-    });
+    const { code } = transform(
+      `(${DoNotation.identifier}, a = 1, b = 2, a + b)`,
+      {
+        plugins: [plugin]
+      }
+    );
     expect(eval(code)(toArray)).toEqual([1, 2, 3]);
   });
   test("execute assign", () => {
     const assign = (item, next) => next(item);
-    const { code } = transform(`join(a = 1, b = 2, ({ a, b }))`, {
-      plugins: [plugin]
-    });
+    const { code } = transform(
+      `(${DoNotation.identifier}, a = 1, b = 2, ({ a, b }))`,
+      {
+        plugins: [plugin]
+      }
+    );
     expect(eval(code)(assign)).toEqual({ a: 1, b: 2 });
   });
 });

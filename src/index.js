@@ -2,12 +2,12 @@ import { SymbolicExpression } from "./SymbolicExpression";
 import { DoNotation } from "./DoNotation";
 
 export const Dispatcher = {
-  CallExpression(path) {
-    const callee = path.get("callee");
-    if (callee.isIdentifier({ name: SymbolicExpression.identifier }))
-      SymbolicExpression.CallExpression(path);
-    else if (callee.isIdentifier({ name: DoNotation.identifier }))
-      DoNotation.CallExpression(path);
+  SequenceExpression(path) {
+    const macro = path.get("expressions")[0];
+    if (macro.isIdentifier({ name: SymbolicExpression.identifier }))
+      SymbolicExpression.SequenceExpression(path);
+    else if (macro.isIdentifier({ name: DoNotation.identifier }))
+      DoNotation.SequenceExpression(path);
   }
 };
 

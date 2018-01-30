@@ -15,13 +15,13 @@ npm install --save-dev babel-plugin-transform-js-macros
 Detect free variables in an expression and return a lambda that takes those as arguments.
 
 ```javascript
-const myExpression = symbolic(x + y);
+symbolic, x + y;
 ```
 
 gives
 
 ```javascript
-const myExpression = ({ x, y }) => x + y;
+({ x, y }) => x + y;
 ```
 
 ## DoNotation
@@ -29,13 +29,13 @@ const myExpression = ({ x, y }) => x + y;
 Mimics haskell do-notation. Takes an additional function to flatten the structure.
 
 ```javascript
-const doNotation = join((x = a), (y = b), c);
+join, (x = 1), (y = 2), 3;
 ```
 
 gives
 
 ```javascript
-const doNotation = _joiner => _joiner(a, x => _joiner(b, y => c));
+_joiner => _joiner(1, x => _joiner(2, y => 3));
 ```
 
 **examples**:
@@ -43,11 +43,10 @@ const doNotation = _joiner => _joiner(a, x => _joiner(b, y => c));
 ```javascript
 // Promise chain
 const then = (promise, callback) => Promise.resolve(promise).then(callback);
-const six = join(
-  (x = Promise.resolve(4)), // binding a Promise
-  (y = x * 2), // Promise.resolve will take care non-promise values
-  Promise.resolve(y - 2)
-)(then);
+const six = (join,
+(x = Promise.resolve(4)), // binding a Promise
+(y = x * 2), // Promise.resolve will take care non-promise values
+Promise.resolve(y - 2))(then);
 six.then(console.log); // 6
 ```
 
@@ -70,25 +69,23 @@ const bind = (monad, binder) => monad.mbind(binder);
 
 // here the magic
 const plus3 = n =>
-  join(
-    (a = n), // n must be a monad
-    (b = new Just(3)),
-    new Just(a + b)
-  )(bind);
+  (join,
+  (a = n), // n must be a monad
+  (b = new Just(3)),
+  new Just(a + b))(bind);
 
-plus3(new Nothing()) instanceof Nothing; // true
-plus3(new Just(4)) instanceof Just; // true
-plus3(new Just(5)).x === 8; // true
+expect(plus3(new Nothing())).toEqual(new Nothing());
+expect(plus3(new Just(5))).toEqual(new Just(8));
 ```
 
 ```javascript
 const toArray = (item, next) => [item].concat(next(item));
-join((a = 1), (b = 2), (c = a + b))(toArray); // [1,2,3]
+expect((join, (a = 1), (b = 2), a + b)(toArray)).toEqual([1, 2, 3]);
 ```
 
 ```javascript
 const assign = (item, next) => next(item);
-join((a = 1), (b = 2), { a, b }); // { a: 1,b:2}
+expect((join, (a = 1), (b = 2), { a, b })(assign)).toEqual({ a: 1, b: 2 });
 ```
 
 ## TODO

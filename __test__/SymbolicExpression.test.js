@@ -4,7 +4,7 @@ import { SymbolicExpression } from "../src/SymbolicExpression";
 
 describe("SymbolicExpression", () => {
   test("works", () => {
-    const { code } = transform(`${SymbolicExpression.identifier}(x+y)`, {
+    const { code } = transform(`(${SymbolicExpression.identifier}, x + y)`, {
       plugins: [plugin]
     });
     expect(code).toBe(`({\n  x,\n  y\n}) => x + y;`);

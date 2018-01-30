@@ -2,9 +2,8 @@ import { types as t } from "babel-core";
 
 export const SymbolicExpression = {
   identifier: "symbolic",
-  CallExpression(path) {
-    const body = path.get("arguments")[0];
-    notSpreadElement(body);
+  SequenceExpression(path) {
+    const body = path.get("expressions")[1];
     const freeVars = new Set();
     body.traverse(CollectFreeVariables, { freeVars });
     const makeParam = name =>
@@ -20,9 +19,4 @@ const CollectFreeVariables = {
     const isFree = !path.isReferencedIdentifier();
     this.freeVars.add(path.node.name);
   }
-};
-
-const notSpreadElement = ast => {
-  if (ast.isSpreadElement())
-    throw path.buildCodeFrameError("Does not support spread operator");
 };

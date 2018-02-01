@@ -2,12 +2,16 @@
   "name": "babel-plugin-transform-js-macros",
   "version": "0.0.3",
   "description": "A handful of useful macros as babel-plugin.",
-  "repository":
-    "https://github.com/freddi301/babel-plugin-transform-js-macros.git",
+  "repository": "https://github.com/freddi301/babel-plugin-transform-js-macros.git",
   "license": "MIT",
   "main": "lib/index.js",
-  "files": ["lib"],
-  "keywords": ["babel-plugin", "macro"],
+  "files": [
+    "lib"
+  ],
+  "keywords": [
+    "babel-plugin",
+    "macro"
+  ],
   "scripts": {
     "build": "rm -rf lib && babel src -d lib --source-maps true",
     "test": "jest --coverage",
@@ -32,6 +36,9 @@
     "regenerator-runtime": "^0.11.1"
   },
   "lint-staged": {
-    "*.{js,json,css,md}": ["prettier --write", "git add"]
+    "*.{js}": [
+      "prettier --write",
+      "git add"
+    ]
   }
 }

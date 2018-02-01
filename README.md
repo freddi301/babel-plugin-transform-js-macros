@@ -15,7 +15,7 @@ npm install --save-dev babel-plugin-transform-js-macros
 Detect free variables in an expression and return a lambda that takes those as arguments.
 
 ```javascript
-symbolic, x + y;
+(symbolic, x + y);
 ```
 
 gives
@@ -29,7 +29,11 @@ gives
 Mimics haskell do-notation. Takes an additional function to flatten the structure.
 
 ```javascript
-join, (x = 1), (y = 2), 3;
+(join,
+  x = 1,
+  y = 2,
+  3
+);
 ```
 
 gives
@@ -44,10 +48,11 @@ _joiner => _joiner(1, x => _joiner(2, y => 3));
 // Promise chain
 const then = (promise, callback) => Promise.resolve(promise).then(callback);
 const six = (join,
-(x = Promise.resolve(4)), // binding a Promise
-(y = x * 2), // Promise.resolve will take care non-promise values
-Promise.resolve(y - 2))(then);
-six.then(console.log); // 6
+  x = Promise.resolve(4), // binding a Promise
+  y = x * 2, // Promise.resolve will take care non-promise values
+  Promise.resolve(y - 2)
+);
+six(then).then(console.log); // 6
 ```
 
 ```javascript
@@ -65,14 +70,14 @@ class Just {
     return f(this.x);
   }
 }
-const bind = (monad, binder) => monad.mbind(binder);
 
+const bind = (monad, binder) => monad.mbind(binder);
 // here the magic
-const plus3 = n =>
-  (join,
-  (a = n), // n must be a monad
-  (b = new Just(3)),
-  new Just(a + b))(bind);
+const plus3 = n => (join,
+  a = n, // n must be a monad
+  b = new Just(3),
+  new Just(a + b)
+)(bind);
 
 expect(plus3(new Nothing())).toEqual(new Nothing());
 expect(plus3(new Just(5))).toEqual(new Just(8));
@@ -80,12 +85,20 @@ expect(plus3(new Just(5))).toEqual(new Just(8));
 
 ```javascript
 const toArray = (item, next) => [item].concat(next(item));
-expect((join, (a = 1), (b = 2), a + b)(toArray)).toEqual([1, 2, 3]);
+expect((join,
+  a = 1,
+  b = 2,
+  a + b
+)(toArray)).toEqual([1, 2, 3]);
 ```
 
 ```javascript
 const assign = (item, next) => next(item);
-expect((join, (a = 1), (b = 2), { a, b })(assign)).toEqual({ a: 1, b: 2 });
+expect((join,
+  a = 1,
+  b = 2,
+  { a, b }
+)(assign)).toEqual({ a: 1, b: 2 });
 ```
 
 ## TODO
